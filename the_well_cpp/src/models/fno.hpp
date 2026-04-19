@@ -1,22 +1,21 @@
-// ============================================================================
-// FNO.HPP — Fourier Neural Operator (1D, real-valued)
+﻿// ============================================================================
+// FNO.HPP â€” Fourier Neural Operator (1D, real-valued)
 //
 // Replaces PolymathicAI's Python FNO with pure C++ / AVX2.
 //
 // Architecture:
-//   1. Lifting:  [history*N] → [hidden*N]  via linear projection per node
-//   2. Fourier Layers (×4):
+//   1. Lifting:  [history*N] â†’ [hidden*N]  via linear projection per node
+//   2. Fourier Layers (Ã—4):
 //      - Real-valued spectral convolution (truncated frequency modes)
 //      - Residual linear bypass
 //      - GELU activation
-//   3. Projection: [hidden*N] → [N]
+//   3. Projection: [hidden*N] â†’ [N]
 //
 // All ops are float32, AVX2-accelerated where beneficial.
 // ============================================================================
 #pragma once
 
 #include "model.hpp"
-#include <cmath>
 
 namespace well {
 
@@ -118,7 +117,7 @@ struct FNO : Model {
         batch_ = batch;
         (void)history; // stored at init
 
-        // ── Lifting: for each spatial position, project [history] → [HIDDEN] ──
+        // â”€â”€ Lifting: for each spatial position, project [history] â†’ [HIDDEN] â”€â”€
         for (int b = 0; b < batch; ++b) {
             for (int j = 0; j < width; ++j) {
                 for (int h = 0; h < HIDDEN; ++h) {
@@ -132,11 +131,11 @@ struct FNO : Model {
             }
         }
 
-        // ── Fourier Layers ──
+        // â”€â”€ Fourier Layers â”€â”€
         for (int d = 0; d < DEPTH; ++d) {
             for (int b = 0; b < batch; ++b) {
                 for (int h = 0; h < HIDDEN; ++h) {
-                    // Spectral convolution (simplified: truncated DFT → multiply → iDFT)
+                    // Spectral convolution (simplified: truncated DFT â†’ multiply â†’ iDFT)
                     // Using a real-valued spectral approximation:
                     //   For each mode k in [0, MODES), compute coefficient from input
                     //   Multiply by spectral weight
@@ -185,11 +184,11 @@ struct FNO : Model {
                 }
             }
 
-            // Copy output → lifted for next layer
+            // Copy output â†’ lifted for next layer
             memcpy(lifted.data, layer_out.data, batch * HIDDEN * width * sizeof(float));
         }
 
-        // ── Projection: [HIDDEN] → [1] per spatial position ──
+        // â”€â”€ Projection: [HIDDEN] â†’ [1] per spatial position â”€â”€
         for (int b = 0; b < batch; ++b) {
             for (int j = 0; j < width; ++j) {
                 float sum = 0;
@@ -206,7 +205,7 @@ struct FNO : Model {
                   int batch, int history, int width) override {
         (void)history;
 
-        // ── Projection gradient ──
+        // â”€â”€ Projection gradient â”€â”€
         // d_proj[h] += sum over (b,j) of lifted[b,h,j] * d_output[b,j]
         for (int h = 0; h < HIDDEN; ++h) {
             float grad_w = 0;
@@ -230,7 +229,7 @@ struct FNO : Model {
             }
         }
 
-        // ── Fourier layers backward (simplified — accumulate spectral & bypass grads) ──
+        // â”€â”€ Fourier layers backward (simplified â€” accumulate spectral & bypass grads) â”€â”€
         // For this implementation we compute approximate parameter gradients
         for (int d = DEPTH - 1; d >= 0; --d) {
             // GELU backward
@@ -281,7 +280,7 @@ struct FNO : Model {
             }
         }
 
-        // ── Lifting gradient ──
+        // â”€â”€ Lifting gradient â”€â”€
         for (int t = 0; t < history_; ++t) {
             for (int h = 0; h < HIDDEN; ++h) {
                 float g = 0;

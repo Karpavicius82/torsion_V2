@@ -1,10 +1,10 @@
-// ============================================================================
-// MODEL.HPP — Base class for surrogate PDE models
+﻿// ============================================================================
+// MODEL.HPP â€” Base class for surrogate PDE models
 //
 // All models implement:
-//   forward()  — predict next timestep from history
-//   backward() — compute gradients w.r.t. parameters
-//   params()   — return parameter/gradient tensor pairs
+//   forward()  â€” predict next timestep from history
+//   backward() â€” compute gradients w.r.t. parameters
+//   params()   â€” return parameter/gradient tensor pairs
 //
 // Input:  [batch, history, N]  (history timesteps of N-node field)
 // Output: [batch, N]           (predicted next timestep)
@@ -12,7 +12,6 @@
 #pragma once
 
 #include "tensor.hpp"
-#include <cstdio>
 
 namespace well {
 
@@ -38,7 +37,7 @@ struct Model {
     virtual const char* name() const = 0;
     virtual int param_count() const = 0;
 
-    // Forward: input[batch*history*N] → output[batch*N]
+    // Forward: input[batch*history*N] â†’ output[batch*N]
     virtual void forward(const Tensor& input, Tensor& output,
                          int batch, int history, int width) = 0;
 

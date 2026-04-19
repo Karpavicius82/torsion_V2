@@ -1,12 +1,12 @@
-// ============================================================================
-// CONV_NET.HPP — Dilated 1D ConvNet for PDE surrogate modeling
+﻿// ============================================================================
+// CONV_NET.HPP â€” Dilated 1D ConvNet for PDE surrogate modeling
 //
 // Replaces PolymathicAI's DilatedResNet with pure C++.
 //
 // Architecture:
-//   1. Lifting: [history] → [hidden] per node
-//   2. 6× Dilated Conv blocks (dilation 1,2,4,8,4,2) with residual
-//   3. Projection: [hidden] → [1]
+//   1. Lifting: [history] â†’ [hidden] per node
+//   2. 6Ã— Dilated Conv blocks (dilation 1,2,4,8,4,2) with residual
+//   3. Projection: [hidden] â†’ [1]
 //
 // Captures long-range spatial dependencies via exponentially growing
 // receptive field, matching the torsion PDE wavefront propagation.
@@ -14,7 +14,6 @@
 #pragma once
 
 #include "model.hpp"
-#include <cmath>
 
 namespace well {
 

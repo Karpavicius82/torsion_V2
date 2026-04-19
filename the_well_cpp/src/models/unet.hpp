@@ -1,12 +1,12 @@
-// ============================================================================
-// UNET.HPP — 1D U-Net with encoder-decoder architecture
+﻿// ============================================================================
+// UNET.HPP â€” 1D U-Net with encoder-decoder architecture
 //
 // Replaces PolymathicAI's Python UNet with pure C++.
 //
 // Architecture:
 //   Encoder: 3 levels of conv1d(kernel=5) + downsample(stride=2)
 //   Bottleneck: conv1d
-//   Decoder: 3 levels of upsample(×2) + skip-connection + conv1d(kernel=5)
+//   Decoder: 3 levels of upsample(Ã—2) + skip-connection + conv1d(kernel=5)
 //   Output: linear projection to 1 channel
 //
 // All float32, no dependencies.
@@ -14,7 +14,6 @@
 #pragma once
 
 #include "model.hpp"
-#include <cmath>
 
 namespace well {
 
@@ -165,7 +164,7 @@ struct UNet1D : Model {
         (void)batch; // process one sample at a time for simplicity
         (void)history;
 
-        // Reshape input: [history, width] → treat history as channels
+        // Reshape input: [history, width] â†’ treat history as channels
         int w = width;
 
         // Encoder pass
@@ -239,7 +238,7 @@ struct UNet1D : Model {
             conv_out.release();
         }
 
-        // Projection: [CHANNELS[0], width] → [width]
+        // Projection: [CHANNELS[0], width] â†’ [width]
         for (int j = 0; j < width; ++j) {
             float sum = 0;
             for (int c = 0; c < CHANNELS[0]; ++c)

@@ -10,9 +10,7 @@
 // ============================================================================
 #pragma once
 
-#include <cstdint>
-#include <cstring>
-#include <immintrin.h>
+#include "compat.hpp"
 
 namespace well {
 namespace engine {

@@ -1,5 +1,5 @@
-// ============================================================================
-// OPTIMIZER.HPP — Adam optimizer (pure C++ / AVX2)
+﻿// ============================================================================
+// OPTIMIZER.HPP â€” Adam optimizer (pure C++ / AVX2)
 //
 // Replaces PyTorch's torch.optim.Adam.
 // Implements bias-corrected first and second moment estimates.
@@ -9,7 +9,6 @@
 
 #include "tensor.hpp"
 #include "models/model.hpp"
-#include <cmath>
 
 namespace well {
 
@@ -114,7 +113,7 @@ struct Adam {
     }
 };
 
-// ── Cosine Annealing LR Scheduler ──
+// â”€â”€ Cosine Annealing LR Scheduler â”€â”€
 struct CosineScheduler {
     float base_lr, min_lr;
     int total_epochs;

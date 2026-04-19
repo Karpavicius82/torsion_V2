@@ -7,20 +7,10 @@
 // ============================================================================
 #pragma once
 
-#include <cstdint>
-#include <cstdlib>
-#include <cstring>
-#include <cmath>
-#include <immintrin.h>
+#include "compat.hpp"
 
-#ifdef _WIN32
-  #include <malloc.h>
-  static inline void* aligned_alloc_impl(size_t align, size_t sz) { return _aligned_malloc(sz, align); }
-  static inline void  aligned_free_impl(void* p) { _aligned_free(p); }
-#else
-  static inline void* aligned_alloc_impl(size_t align, size_t sz) { return aligned_alloc(align, sz); }
-  static inline void  aligned_free_impl(void* p) { free(p); }
-#endif
+static inline void* aligned_alloc_impl(size_t align, size_t sz) { return bare_alloc(sz, align); }
+static inline void  aligned_free_impl(void* p) { bare_free(p); }
 
 namespace well {
 
