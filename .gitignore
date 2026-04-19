@@ -1,0 +1,16 @@
+*.exe
+*.obj
+*.o
+*.pdb
+*.ilk
+*.dll
+*.pyc
+__pycache__/
+*.egg-info/
+.eggs/
+build/
+node_modules/
+*.hdf5
+torsion_well_data/
+the_well-master/V26_torsion/build/
+the_well-master/the_well-master/.eggs/
